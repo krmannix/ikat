@@ -5,7 +5,8 @@
   "main": "index.js",
   "engine": "node >= 4.0.0",
   "scripts": {
-    "test": "./node_modules/mocha/bin/mocha ./test/**/*.js"
+    "test": "./node_modules/mocha/bin/mocha ./test/**/*.js",
+    "lint": "./node_modules/eslint/bin/eslint.js ."
   },
   "repository": {
     "type": "git",
