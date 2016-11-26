@@ -5,7 +5,7 @@ const chai = require('chai');
 const expect = chai.expect;
 
 describe('base', () => {
-  describe.skip('type', () => {
+  describe('type', () => {
 
     describe('Array', () => {
       let options = {
