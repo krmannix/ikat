@@ -1,2 +1,2 @@
 # ikat
-object pattern matching for js
+object pattern matching for node

@@ -1,0 +1,32 @@
+{
+  "name": "ikat",
+  "version": "0.0.1",
+  "description": "object pattern matching for node",
+  "main": "index.js",
+  "engine": "node >= 4.0.0",
+  "scripts": {
+    "test": "./node_modules/mocha/bin/mocha ./test/**/*.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/krmannix/ikat.git"
+  },
+  "keywords": [
+    "pattern",
+    "matching"
+  ],
+  "author": "K. Rodman Mannix",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/krmannix/ikat/issues"
+  },
+  "homepage": "https://github.com/krmannix/ikat#readme",
+  "devDependencies": {
+    "chai": "^3.5.0",
+    "eslint": "^3.11.0",
+    "mocha": "^3.2.0"
+  },
+  "dependencies": {
+    "lodash": "^4.17.2"
+  }
+}
