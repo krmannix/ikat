@@ -25,6 +25,7 @@ Inspiration initially taken from functional languages that use pattern-matching,
 - [Not Undefined](#notUndefined)
 - [Null](#null)
 - [Not Null](#notNull)
+- [Default](#default)
 
 ### Introduction
 
@@ -303,6 +304,31 @@ let data = {
 patternMatcher(data); // 'it works!'
 ```
 
+### default
+
+If not pattern is matched, pass in a `default` function. This function will run when there's no pattern match. Use the `ikat.default()` rather than a pattern-object along with a success function to create a **default function**.
+
+**Warning**: The default function must be the last pattern passed in. It is a bug to define a default function that is not the last pattern, and an `Error` will be thrown.
+
+```javascript
+let pattern = {
+  a: [String],
+};
+
+let defaultMarker= ikat.default();
+
+let patternMatcher = ikat.build(
+  [pattern, () => 'first pattern'],
+  [defaultMarker, () => 'it works!'],
+);
+
+let data = {
+  a: 1,
+};
+
+patternMatcher(data); // 'it works!'
+```
+
 ## Tests
 
 Tests can be run via the `npm test` command. [We aim to write tests](test/) for all supported behaviors.
@@ -326,12 +352,15 @@ Contributions are always welcome! This may come in the form of _constructive_ cr
   * ~~notUndefined~~
   * ~~null~~
   * ~~notNull~~
+  * ~~default~~
   * `instanceof`
   * `contains` (`Array`)
   * `contains` (`String`)
   * `regex`
   * ~~Map, Set, Date type matching~~
   * Custom validators
+  * Pretty errors
+  * Non-happy path tests for proper handling
 * Add benchmarking
 * Add code coverage
 * Support single field patterns
