@@ -9,6 +9,11 @@ object pattern-matching for node.
 ## Motivation
 Inspiration initially taken from functional languages that use pattern-matching, primarily [Elixir](http://elixir-lang.org/getting-started/pattern-matching.html). Primary use case is branching based on the qualities of a plain old javascript object. While there is certainly a way to achieve the same behavior with numerous if/else statements, switch cases, and other code that would be messy to maintain or easily understandable to a developer new to the project, pattern-matching seemed to be the obvious way to tackle this particular use case.
 
+### Why not argument pattern matching?
+The honest answer is that argument matching is quite hard in JavaScript due to it's flexibility. There's no such thing as _really_ overloading functions - sure, you can pass a variable number of arguments to a function no matter what the function definition is, but you can create functions with the same name but different function definitions based on number of arguments and argument type.
+
+One's first thought might be to use the first `undefined` as an end of input indicator. However, `undefined` might be a valid (and desired) input. Using objects as the primary medium to match against should support most use cases, and with a little tinkering can (hopefully) support all use cases.
+
 ## Current Status
 **Warning**: Under development & currently experimental. Syntax is subject to change. Features will be added, and existing capabilities may be altered.
 
@@ -35,6 +40,8 @@ Patterns will be matched in the order they are passed into the `Ikat.build` func
 
 Pattern matching is not strict - matching will still occur if additional keys exist on an object. Only the keys defined in the pattern will be checked.
 
+Pattern validators can be passed in as a single value, or if multiple are required, passed in as an Array.
+
 Example:
 
 ```javascript
@@ -50,8 +57,8 @@ let patternFn1 = object => object.a;
 
 // pattern 2
 let pattern2 = {
-  a: [String],
-  b: [String],
+  a: String,
+  b: String,
 };
 
 let patternFn2 = object => object.b;
@@ -363,7 +370,8 @@ Contributions are always welcome! This may come in the form of _constructive_ cr
   * Non-happy path tests for proper handling
 * Add benchmarking
 * Add code coverage
-* Support single field patterns
-  * `{ a: Number }` instead of `{ a: [Number] }`
+* ~~Support single field patterns~~
+  * ~~{ a: Number } instead of { a: [Number] }~~
+* Nested object support
 
 Have suggestions? Add them via a GitHub issue!

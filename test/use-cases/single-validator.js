@@ -1,0 +1,41 @@
+'use strict';
+
+const common = require('../common');
+const ikat = common.ikat;
+const chai = require('chai');
+const expect = chai.expect;
+
+describe('use cases', () => {
+  describe('single validator', () => {
+
+    describe('Number', () => {
+      let options = {
+        a: Number,
+      };
+
+      it('true for match', () => {
+        let data = {
+          a: 1,
+          b: 'a',
+        };
+
+        let func = common.funcReturnsTrue(options);
+        let val = func(data);
+
+        expect(val).to.be.true;
+      });
+
+      it('noMatch for no match', () => {
+        let data = {
+          a: '1',
+        };
+
+        let func = common.funcReturnsTrue(options);
+        let val = func(data);
+
+        expect(val).to.be.equal(ikat.noMatch);
+      });
+    });
+
+  });
+});
