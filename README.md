@@ -21,6 +21,10 @@ Inspiration initially taken from functional languages that use pattern-matching,
 - [Greater Than Or Equal](#gte)
 - [Less Than](#lt)
 - [Less Than Or Equal](#lte)
+- [Undefined](#undefined)
+- [Not Undefined](#notUndefined)
+- [Null](#null)
+- [Not Null](#notNull)
 
 ### Introduction
 
@@ -213,6 +217,92 @@ let data = {
 patternMatcher(data); // 'it works!'
 ```
 
+### undefined
+
+Key is **either** `=== undefined` or not defined on the object. Use the `ikat.undefined()` function to add an **undefined** validator.
+
+```javascript
+let pattern = {
+  a: [ikat.undefined()],
+  b: [ikat.undefined()],
+};
+
+let patternMatcher = ikat.build(
+  [pattern, () => 'it works!'],
+);
+
+let data = {
+  a: undefined,
+};
+
+patternMatcher(data); // 'it works!'
+```
+
+### notUndefined
+
+Key is `!== undefined`. Use the `ikat.notUndefined()` function to add an **not undefined** validator.
+
+```javascript
+let pattern = {
+  a: [ikat.notUndefined()],
+  b: [ikat.notUndefined()],
+};
+
+let patternMatcher = ikat.build(
+  [pattern, () => 'it works!'],
+);
+
+let data = {
+  a: 1,
+  b: null,
+};
+
+patternMatcher(data); // 'it works!'
+```
+
+### null
+
+Key is `=== null`. Use the `ikat.null()` function to add an **null** validator.
+
+```javascript
+let pattern = {
+  a: [ikat.null()],
+};
+
+let patternMatcher = ikat.build(
+  [pattern, () => 'it works!'],
+);
+
+let data = {
+  a: null,
+};
+
+patternMatcher(data); // 'it works!'
+```
+
+### notNull
+
+Key is `!== null`. Use the `ikat.notNull()` function to add an **not null** validator.
+
+```javascript
+let pattern = {
+  a: [ikat.notNull()],
+  b: [ikat.notNull()],
+  c: [ikat.notNull()],
+};
+
+let patternMatcher = ikat.build(
+  [pattern, () => 'it works!'],
+);
+
+let data = {
+  a: 1,
+  b: undefined,
+};
+
+patternMatcher(data); // 'it works!'
+```
+
 ## Tests
 
 Tests can be run via the `npm test` command. [We aim to write tests](test/) for all supported behaviors.
@@ -232,9 +322,13 @@ Contributions are always welcome! This may come in the form of _constructive_ cr
   * ~~gte~~
   * ~~lt~~
   * ~~lte~~
+  * ~~undefined~~
+  * ~~notUndefined~~
+  * ~~null~~
+  * ~~notNull~~
+  * `instanceof`
   * `contains` (`Array`)
   * `contains` (`String`)
-  * `instanceof`
   * `regex`
   * ~~Map, Set, Date type matching~~
   * Custom validators
