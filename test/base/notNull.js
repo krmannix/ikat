@@ -1,11 +1,13 @@
 'use strict';
 
-const ikat = require('../../../lib');
+const common = require('../common');
+const ikat = common.ikat;
 const chai = require('chai');
 const expect = chai.expect;
 
 describe('base', () => {
   describe('existence', () => {
+
     describe('notNull', () => {
       it('true for defined', () => {
         let options = {
@@ -16,7 +18,7 @@ describe('base', () => {
           a: 1,
         };
 
-        let func = funcReturnsTrue(options);
+        let func = common.funcReturnsTrue(options);
         let val = func(data);
 
         expect(val).to.be.true;
@@ -30,7 +32,7 @@ describe('base', () => {
         let data = {
         };
 
-        let func = funcReturnsTrue(options);
+        let func = common.funcReturnsTrue(options);
         let val = func(data);
 
         expect(val).to.be.true;
@@ -45,7 +47,7 @@ describe('base', () => {
           a: undefined,
         };
 
-        let func = funcReturnsTrue(options);
+        let func = common.funcReturnsTrue(options);
         let val = func(data);
 
         expect(val).to.be.true;
@@ -60,17 +62,12 @@ describe('base', () => {
           a: null,
         };
 
-        let func = funcReturnsTrue(options);
+        let func = common.funcReturnsTrue(options);
         let val = func(data);
 
         expect(val).to.be.equal(ikat.noMatch);
       });
     });
+
   });
 });
-
-function funcReturnsTrue(options) {
-  return ikat.build(
-    [options, () => true]
-  );
-}
