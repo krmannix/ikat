@@ -149,7 +149,7 @@ Contributions are always welcome! This may come in the form of _constructive_ cr
   * `contains` (`String`)
   * `instanceof`
   * `regex`
-  * `Map`, `Set`, `Date` type matching
+  * ~~Map, Set, Date type matching~~
   * Custom validators
 * Add benchmarking
 * Add code coverage

@@ -91,6 +91,90 @@ describe('base', () => {
       });
     });
 
+    describe('Map', () => {
+      let options = {
+        a: [Map],
+      };
+
+      it('true for match', () => {
+        let data = {
+          a: new Map(),
+        };
+
+        let func = funcReturnsTrue(options);
+        let val = func(data);
+
+        expect(val).to.be.true;
+      });
+
+      it('noMatch for no match', () => {
+        let data = {
+          a: 1,
+        };
+
+        let func = funcReturnsTrue(options);
+        let val = func(data);
+
+        expect(val).to.be.equal(ikat.noMatch);
+      });
+    });
+
+    describe('Set', () => {
+      let options = {
+        a: [Set],
+      };
+
+      it('true for match', () => {
+        let data = {
+          a: new Set(),
+        };
+
+        let func = funcReturnsTrue(options);
+        let val = func(data);
+
+        expect(val).to.be.true;
+      });
+
+      it('noMatch for no match', () => {
+        let data = {
+          a: 1,
+        };
+
+        let func = funcReturnsTrue(options);
+        let val = func(data);
+
+        expect(val).to.be.equal(ikat.noMatch);
+      });
+    });
+
+    describe('Date', () => {
+      let options = {
+        a: [Date],
+      };
+
+      it('true for match', () => {
+        let data = {
+          a: new Date(),
+        };
+
+        let func = funcReturnsTrue(options);
+        let val = func(data);
+
+        expect(val).to.be.true;
+      });
+
+      it('noMatch for no match', () => {
+        let data = {
+          a: 1,
+        };
+
+        let func = funcReturnsTrue(options);
+        let val = func(data);
+
+        expect(val).to.be.equal(ikat.noMatch);
+      });
+    });
+
   });
 
 });
