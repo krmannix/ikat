@@ -17,6 +17,10 @@ Inspiration initially taken from functional languages that use pattern-matching,
 - [Introduction](#introduction)
 - [Primitives](#primitives)
 - [Types](#types)
+- [Greater Than](#gt)
+- [Greater Than Or Equal](#gte)
+- [Less Than](#lt)
+- [Less Than Or Equal](#lte)
 
 ### Introduction
 
@@ -105,9 +109,9 @@ Primitive types can be used as validators. Current types supported are:
 
 ```javascript
 let pattern = {
-  a: Object,
-  b: Function,
-  c: Array,
+  a: [Object],
+  b: [Function],
+  c: [Array],
 };
 
 let patternMatcher = ikat.build(
@@ -125,6 +129,89 @@ let data = {
 patternMatcher(data); // 'it works!'
 ```
 
+### gt
+
+Numbers can be compared to be greater than. `String`s will not be coerced to `Number`s. Use the `ikat.gt(...)` function to add a **greater than** validator.
+
+```javascript
+let pattern = {
+  a: [ikat.gt(3)],
+};
+
+let patternMatcher = ikat.build(
+  [pattern, () => 'it works!'],
+);
+
+let data = {
+  a: 4,
+};
+
+patternMatcher(data); // 'it works!'
+```
+
+### gte
+
+Numbers can be compared to be greater than or equal. `String`s will not be coerced to `Number`s. Use the `ikat.gte(...)` function to add a **greater than or equal** validator.
+
+```javascript
+let pattern = {
+  a: [ikat.gt(3)],
+  b: [ikat.gt(3)],
+};
+
+let patternMatcher = ikat.build(
+  [pattern, () => 'it works!'],
+);
+
+let data = {
+  a: 3,
+  b: 4,
+};
+
+patternMatcher(data); // 'it works!'
+```
+
+### lt
+
+Numbers can be compared to be less than. `String`s will not be coerced to `Number`s. Use the `ikat.lt(...)` function to add a **less than** validator.
+
+```javascript
+let pattern = {
+  a: [ikat.gt(3)],
+};
+
+let patternMatcher = ikat.build(
+  [pattern, () => 'it works!'],
+);
+
+let data = {
+  a: 2,
+};
+
+patternMatcher(data); // 'it works!'
+```
+
+### lte
+
+Numbers can be compared to be less than or equal. `String`s will not be coerced to `Number`s. Use the `ikat.lte(...)` function to add a **less than or equal** validator.
+
+```javascript
+let pattern = {
+  a: [ikat.gt(3)],
+  b: [ikat.gt(3)],
+};
+
+let patternMatcher = ikat.build(
+  [pattern, () => 'it works!'],
+);
+
+let data = {
+  a: 3,
+  b: 2,
+};
+
+patternMatcher(data); // 'it works!'
+```
 
 ## Tests
 
@@ -141,10 +228,10 @@ Contributions are always welcome! This may come in the form of _constructive_ cr
 ## TODO:
 
 * Support validators
-  * `gt`
-  * `gte`
-  * `lt`
-  * `lte`
+  * ~~gt~~
+  * ~~gte~~
+  * ~~lt~~
+  * ~~lte~~
   * `contains` (`Array`)
   * `contains` (`String`)
   * `instanceof`
