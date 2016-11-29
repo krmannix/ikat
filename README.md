@@ -36,6 +36,8 @@ One's first thought might be to use the first `undefined` as an end of input ind
 
 `Ikat` can generate a function that you can pass an object to, and will execute its associated function and return the function's value. Functions are executed and returned synchronously - if you need async behavior, I suggested returning a [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise).
 
+In addition to associating a function, you can associate a value to be returned as well. It is essentially a convenience method for a function that returns the value. This is shown in the example below.
+
 Patterns will be matched in the order they are passed into the `Ikat.build` function - i.e., the first pattern to match will execute the associated function.
 
 Pattern matching is not strict - matching will still occur if additional keys exist on an object. Only the keys defined in the pattern will be checked.
@@ -63,9 +65,18 @@ let pattern2 = {
 
 let patternFn2 = object => object.b;
 
+// pattern 3
+let pattern3 = {
+  a: Number,
+  b: [Number],
+};
+
+let patternFn3 = 'Some value.';
+
 let patternMatcher = ikat.build(
   [pattern1, patternFn1],
   [pattern2, patternFn2],
+  [pattern3, patternFn3],
 );
 
 // execution
@@ -79,9 +90,16 @@ let data2 = {
   b: 'bar',
 }
 
+let data3 = {
+  a: 10,
+  b: 100,
+}
+
 console.log(patternMatcher(data1)); // 118
 
 console.log(patternMatcher(data2)); // bar
+
+console.log(patternMatcher(data3)); // 'Some value.'
 ```
 
 ### Primitives
