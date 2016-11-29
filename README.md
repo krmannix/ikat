@@ -113,9 +113,9 @@ Primitive types can be used as validators. Current types supported are:
 
 ```javascript
 let pattern = {
-  a: [Number],
-  b: [String],
-  c: [Boolean],
+  a: Number,
+  b: String,
+  c: Boolean,
 };
 
 let patternMatcher = ikat.build(
@@ -141,9 +141,9 @@ Primitive types can be used as validators. Current types supported are:
 
 ```javascript
 let pattern = {
-  a: [Object],
-  b: [Function],
-  c: [Array],
+  a: Object,
+  b: Function,
+  c: Array,
 };
 
 let patternMatcher = ikat.build(
@@ -167,7 +167,7 @@ Numbers can be compared to be greater than. `String`s will not be coerced to `Nu
 
 ```javascript
 let pattern = {
-  a: [ikat.gt(3)],
+  a: ikat.gt(3),
 };
 
 let patternMatcher = ikat.build(
@@ -187,8 +187,8 @@ Numbers can be compared to be greater than or equal. `String`s will not be coerc
 
 ```javascript
 let pattern = {
-  a: [ikat.gt(3)],
-  b: [ikat.gt(3)],
+  a: ikat.gt(3),
+  b: ikat.gt(3),
 };
 
 let patternMatcher = ikat.build(
@@ -209,7 +209,7 @@ Numbers can be compared to be less than. `String`s will not be coerced to `Numbe
 
 ```javascript
 let pattern = {
-  a: [ikat.gt(3)],
+  a: ikat.gt(3),
 };
 
 let patternMatcher = ikat.build(
@@ -229,8 +229,8 @@ Numbers can be compared to be less than or equal. `String`s will not be coerced 
 
 ```javascript
 let pattern = {
-  a: [ikat.gt(3)],
-  b: [ikat.gt(3)],
+  a: ikat.gt(3),
+  b: ikat.gt(3),
 };
 
 let patternMatcher = ikat.build(
@@ -251,8 +251,8 @@ Key is **either** `=== undefined` or not defined on the object. Use the `ikat.un
 
 ```javascript
 let pattern = {
-  a: [ikat.undefined()],
-  b: [ikat.undefined()],
+  a: ikat.undefined(),
+  b: ikat.undefined(),
 };
 
 let patternMatcher = ikat.build(
@@ -272,8 +272,8 @@ Key is `!== undefined`. Use the `ikat.notUndefined()` function to add an **not u
 
 ```javascript
 let pattern = {
-  a: [ikat.notUndefined()],
-  b: [ikat.notUndefined()],
+  a: ikat.notUndefined(),
+  b: ikat.notUndefined(),
 };
 
 let patternMatcher = ikat.build(
@@ -294,7 +294,7 @@ Key is `=== null`. Use the `ikat.null()` function to add an **null** validator.
 
 ```javascript
 let pattern = {
-  a: [ikat.null()],
+  a: ikat.null(),
 };
 
 let patternMatcher = ikat.build(
@@ -314,9 +314,9 @@ Key is `!== null`. Use the `ikat.notNull()` function to add an **not null** vali
 
 ```javascript
 let pattern = {
-  a: [ikat.notNull()],
-  b: [ikat.notNull()],
-  c: [ikat.notNull()],
+  a: ikat.notNull(),
+  b: ikat.notNull(),
+  c: ikat.notNull(),
 };
 
 let patternMatcher = ikat.build(
@@ -339,7 +339,7 @@ If not pattern is matched, pass in a `default` function. This function will run 
 
 ```javascript
 let pattern = {
-  a: [String],
+  a: String,
 };
 
 let defaultMarker= ikat.default();
