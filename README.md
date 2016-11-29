@@ -1,4 +1,4 @@
-Ikat
+ikat
 ==============
 
 object pattern-matching for node.
@@ -7,15 +7,17 @@ object pattern-matching for node.
 [![Twitter](https://img.shields.io/badge/twitter-@krodmannix-blue.svg?style=flat)](http://twitter.com/krodmannix)
 
 ## Motivation
-Inspiration initially taken from functional languages that use pattern-matching, primarily [Elixir](http://elixir-lang.org/getting-started/pattern-matching.html). Primary use case is branching based on the qualities of a plain old javascript object. While there is certainly a way to achieve the same behavior with numerous if/else statements, switch cases, and other code that would be messy to maintain or easily understandable to a developer new to the project, pattern-matching seemed to be the obvious way to tackle this particular use case.
+Inspiration initially taken from functional languages that use pattern-matching, primarily [Elixir](http://elixir-lang.org/getting-started/pattern-matching.html). Primary use case is branching based on the qualities of a plain old javascript object. While there is certainly a way to achieve the same behavior with numerous `if`/`else` statements, `switch` cases, and other code that would be messy to maintain or easily understandable to a developer new to the project, pattern-matching seemed to be the obvious way to tackle this particular use case.
 
 ### Why not argument pattern matching?
-The honest answer is that argument matching is quite hard in JavaScript due to it's flexibility. There's no such thing as _really_ overloading functions - sure, you can pass a variable number of arguments to a function no matter what the function definition is, but you can create functions with the same name but different function definitions based on number of arguments and argument type.
+The honest answer is that argument matching is quite hard in JavaScript due to the flexibility of the language. There's no such thing as _really_ overloading functions - sure, you can pass a variable number of arguments to a function no matter what the function definition is, but you can't create multiple function signatures with alternative number of arguments and argument types.
 
 One's first thought might be to use the first `undefined` as an end of input indicator. However, `undefined` might be a valid (and desired) input. Using objects as the primary medium to match against should support most use cases, and with a little tinkering can (hopefully) support all use cases.
 
 ## Current Status
-**Warning**: Under development & currently experimental. Syntax is subject to change. Features will be added, and existing capabilities may be altered.
+Under development & currently experimental.
+
+**Warning**: Syntax is subject to change. Features will be added, and existing capabilities may be altered.
 
 ## Usage
 
@@ -34,11 +36,11 @@ One's first thought might be to use the first `undefined` as an end of input ind
 
 ### Introduction
 
-`Ikat` can generate a function that you can pass an object to, and will execute its associated function and return the function's value. Functions are executed and returned synchronously - if you need async behavior, I suggested returning a [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise).
+`ikat` can generate a function that you can pass an object to, and will execute its associated function and return the function's value. Functions are executed and returned synchronously - if you need async behavior, I suggested returning a [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise).
 
 In addition to associating a function, you can associate a value to be returned as well. It is essentially a convenience method for a function that returns the value. This is shown in the example below.
 
-Patterns will be matched in the order they are passed into the `Ikat.build` function - i.e., the first pattern to match will execute the associated function.
+Patterns will be matched in the order they are passed into the `ikat.build` function - i.e., the first pattern to match will execute the associated function.
 
 Pattern matching is not strict - matching will still occur if additional keys exist on an object. Only the keys defined in the pattern will be checked.
 
@@ -360,11 +362,11 @@ Tests can be run via the `npm test` command. [We aim to write tests](test/) for 
 
 ## Linting
 
-Linting can be run via the `npm run lint` command. All code must pass the code quality checks provided by [eslint](http://eslint.org/).
+Linting can be run via the `npm run lint` command. All code must pass the [code quality checks](.eslintrc.json) provided by [eslint](http://eslint.org/).
 
 ## Contributing
 
-Contributions are always welcome! This may come in the form of _constructive_ criticism via GitHub issues, or direct PRs. Contributions will be required to pass all tests and must adhere to the guidelines set forth by the [eslint style guide](.eslintrc.json). This includes source files & test files.
+Contributions are always welcome! This may come in the form of _constructive_ criticism via [GitHub issues](https://github.com/krmannix/ikat/issues), or direct PRs. Contributions will be required to pass all tests and must adhere to the guidelines set forth by the [eslint style guide](.eslintrc.json). This includes source files & test files.
 
 ## TODO:
 
@@ -378,18 +380,20 @@ Contributions are always welcome! This may come in the form of _constructive_ cr
   * ~~null~~
   * ~~notNull~~
   * ~~default~~
+  * ~~Map, Set, Date type matching~~
   * `instanceof`
   * `contains` (`Array`)
   * `contains` (`String`)
   * `regex`
-  * ~~Map, Set, Date type matching~~
   * Custom validators
   * Pretty errors
   * Non-happy path tests for proper handling
-* Add benchmarking
-* Add code coverage
 * ~~Support single field patterns~~
   * ~~{ a: Number } instead of { a: [Number] }~~
+* ~~Success return values~~
+* Add benchmarking
+* Add code coverage
+* Add CI integration
 * Nested object support
 
-Have suggestions? Add them via a GitHub issue!
+Have suggestions? Add them via a [GitHub issue](https://github.com/krmannix/ikat/issues)!

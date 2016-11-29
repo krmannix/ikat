@@ -1,6 +1,6 @@
 {
   "name": "ikat",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "object pattern matching for node",
   "main": "index.js",
   "engine": "node >= 4.0.0",
