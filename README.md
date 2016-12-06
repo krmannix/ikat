@@ -136,6 +136,8 @@ Under development & currently experimental.
 - [Introduction](#introduction)
 - [Primitives](#primitives)
 - [Types](#types)
+- [Equal](#equal)
+- [Not Equal](#notEqual)
 - [Greater Than](#gt)
 - [Greater Than Or Equal](#gte)
 - [Less Than](#lt)
@@ -385,6 +387,46 @@ let data = {
   },
   b: () => 10,
   c: [1],
+};
+
+patternMatcher(data); // 'it works!'
+```
+
+### equal
+
+Compare strict equality (`===`). Values will not be coerced. Use the `ikat.equal(...)` function to add a **strict equal** validator.
+
+```javascript
+let pattern = {
+  a: ikat.equal(3),
+};
+
+let patternMatcher = ikat.build(
+  [pattern, () => 'it works!'],
+);
+
+let data = {
+  a: 3,
+};
+
+patternMatcher(data); // 'it works!'
+```
+
+### notEqual
+
+Compare strict inequality (`!==`). Values will not be coerced. Use the `ikat.notEqual(...)` function to add a **strict not equal** validator.
+
+```javascript
+let pattern = {
+  a: ikat.notEqual(3),
+};
+
+let patternMatcher = ikat.build(
+  [pattern, () => 'it works!'],
+);
+
+let data = {
+  a: '3',
 };
 
 patternMatcher(data); // 'it works!'
