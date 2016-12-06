@@ -6,6 +6,118 @@ object pattern-matching for node.
 [![node](http://img.shields.io/badge/node->=_4.0.0-brightgreen.svg)]()
 [![Twitter](https://img.shields.io/badge/twitter-@krodmannix-blue.svg?style=flat)](http://twitter.com/krodmannix)
 
+## Use Case Examples
+
+### Data Validation
+
+Use pattern-matching to validate data passed into your system, rejecting invalid objects and allowing valid objects to pass through. Below is a simple example dealing with `Player` objects that include `name`, `birthday` and `age`.
+
+```javascript
+const ikat = require('ikat');
+
+let PlayerPattern = {
+  name: String, // `name` must be string
+  birthday: Date, // `birthday` must be a Date
+  age: [Number, ikat.gt(13)], // `age` must be a Number and greater than 13
+}
+
+let onSuccess = (player) => {
+  return player;
+};
+
+let onFailure = () => {
+  throw new Error('invalid player');
+}
+
+let validatePlayer = ikat.build(
+  [PlayerPattern, onSuccess],
+  [ikat.default(), onFailure] // will execute if PlayerPattern is not matched
+)
+
+let player1 = {
+  name: 'Kevin',
+  birthday: new Date(),
+  age: 23,
+};
+
+let player2 = {
+  name: 'Steve',
+  birthday: new Date(),
+  age: 11, // will not match because it is less than 13
+};
+
+// the `PlayerPattern` will be matched for player1, so
+// onSuccess will be executed, which will return the object passed into
+// the `validatePlayer()` function
+let player = validatePlayer(player1); // player is set to player1
+
+// the `PlayerPattern` will not be matched for player2, so
+// onFailure will be executed, which will throw an Error
+let player = validatePlayer(player2); // an Error is thrown
+```
+
+### Mongoose Query Index Selection
+
+A real-world example, and from which `ikat` was sprung. Instead of letting Mongo attempt to select the correct query, we can dictate which index we want based on the keys included in the query object to make sure our query uses the most effecient index. We'll use an example of `User` that has indexed keys of `email`, and `company`, with a compound index on `firstName` and `lastName`.
+
+```javascript
+const ikat = require('ikat');
+
+const emailExists = { email: ikat.notUndefined() };
+const emailIndex = { email: 1 };
+
+const companyExists = { company: ikat.notUndefined() };
+const companyIndex = { company: 1 };
+
+const emailExists = {
+  firstName: ikat.notUndefined(),
+  lastName: ikat.notUndefined(),
+};
+const nameIndex = {
+  firstName: 1,
+  lastName: 1,
+};
+
+const default = emailIndex;
+
+let chooseIndex = ikat.build(
+  [nameExists, nameIndex],
+  [emailExists, emailIndex],
+  [companyExists, companyIndex]
+);
+
+let query1 = {
+  firstName: 'Ron'
+  company: 'Google',
+};
+
+let query2 = {
+  firstName: 'Dave'
+  lastName: 'Roberts',
+  email: 'daveroberts@toysrus.com',
+};
+
+let query3 = {
+  email: 'kevin@tablelist.com',
+  company: 'Tablelist',
+};
+
+// queryHint1 will choose the company index. While firstName is on the query, ikat will only match if both firstName and lastName are not undefined
+let queryHint1 = {
+  hint: chooseIndex(query1),
+};
+
+// queryHint2 will choose the firstName - lastName compound index
+let queryHint2 = {
+  hint: chooseIndex(query2),
+};
+
+// queryHint3 will choose the email index. While both the emailExists and companyExists objects are matched, ikat works in order, so it will choose the first index it matches with. This way, you can determine which indexes you'd prefer to use if multiple conditions are matched
+let queryHint3 = {
+  hint: chooseIndex(query3),
+};
+```
+
 ## Motivation
 Inspiration initially taken from functional languages that use pattern-matching, primarily [Elixir](http://elixir-lang.org/getting-started/pattern-matching.html). Primary use case is branching based on the qualities of a plain old javascript object. While there is certainly a way to achieve the same behavior with numerous `if`/`else` statements, `switch` cases, and other code that would be messy to maintain or easily understandable to a developer new to the project, pattern-matching seemed to be the obvious way to tackle this particular use case.
 
@@ -46,15 +158,132 @@ Pattern matching is not strict - matching will still occur if additional keys ex
 
 Pattern validators can be passed in as a single value, or if multiple are required, passed in as an Array.
 
-Example:
+##### Syntax
+A _pattern_ is an object that allows _validators_ to be assigned to keys within the object.
+
+```javascript
+const pattern = {
+  score: Number, // the score key has a "Number" type validator
+  username: String,
+};
+
+// this object will match the pattern
+let validObject = {
+  score: 6,
+  username: 'kevin',
+};
+
+// this object will not match the pattern
+let invalidObject = {
+  score: 'N/A',
+  username: 'alex',
+}
+```
+
+Multiple _validators_ can be assigned on a key. These validators are AND'd together, as in they will all need to be true for the key to be matched.
+
+```javascript
+const pattern = {
+  score: [Number, ikat.lt(10)], // the score key has a "Number" type validator and a less-than 10 validator
+  username: String,
+};
+
+// this object will match the pattern
+let validObject = {
+  score: 8,
+  username: 'kevin',
+};
+
+// this object will not match the pattern
+let invalidObject = {
+  score: 18,
+  username: 'alex',
+}
+```
+
+_Patterns_ are associated with _success functions_ that will be executed if the pattern is matched.
+
+_ikat_ will create a matching function based on the _patterns_ it is provided via the _build()_ function. The arguments to the _build()_ function are `Array`s of 2 elements. The first element is the _pattern_ while the second element is the _success function_.
+
+```javascript
+const pattern = {
+  score: Number,
+  username: String,
+};
+
+const onSuccess = () => {
+  console.log('Awesome! Nice score.');
+};
+
+// match() is a function create by ikat.build()
+// it will execute the function associated with the patterm
+// that is matched with the object passed into the function
+const match = ikat.build([
+  [pattern, onSuccess]
+]);
+
+// this object will match the pattern
+let validObject = {
+  score: 8,
+  username: 'kevin',
+};
+
+// this object will not match the pattern
+let invalidObject = {
+  score: 'N/A',
+  username: 'alex',
+};
+
+match(validObject); // prints "Awesome! Nice score"
+
+match(invalidObject); // does not print anything
+```
+
+These _success functions_ take in the object passed to the _match_ function.
+
+```javascript
+const pattern = {
+  score: Number,
+  username: String,
+};
+
+const onSuccess = validObject => {
+  return {
+    scoreMultiplier: 2,
+    totalScore: validObject.score * 2,
+  };
+};
+
+// match() is a function create by ikat.build()
+// it will execute the function associated with the patterm
+// that is matched with the object passed into the function
+const match = ikat.build([
+  [pattern, onSuccess]
+]);
+
+// this object will match the pattern
+let validObject = {
+  score: 8,
+  username: 'kevin',
+};
+
+let score = match(validObject);
+// score is now:
+// {
+//    scoreMultiplier: 2,
+//    totalScore: 16,
+// }
+```
+
+More examples:
 
 ```javascript
 const ikat = require('ikat');
 
 // pattern 1
 let pattern1 = {
-  a: [Number],
-  b: [String],
+  a: Number,
+  b: Number,
 };
 
 let patternFn1 = object => object.a;
@@ -69,8 +298,8 @@ let patternFn2 = object => object.b;
 
 // pattern 3
 let pattern3 = {
-  a: Number,
-  b: [Number],
+  a: [Number], // square brackets are optional - see note below
+  b: String,
 };
 
 let patternFn3 = 'Some value.';
@@ -83,8 +312,8 @@ let patternMatcher = ikat.build(
 
 // execution
 let data1 = {
-  a: 118,
-  b: 'hello',
+  a: 10,
+  b: 100,
 }
 
 let data2 = {
@@ -93,11 +322,11 @@ let data2 = {
 }
 
 let data3 = {
-  a: 10,
-  b: 100,
+  a: 118,
+  b: 'hello',
 }
 
-console.log(patternMatcher(data1)); // 118
+console.log(patternMatcher(data1)); // 18
 
 console.log(patternMatcher(data2)); // bar
 
