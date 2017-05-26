@@ -60,6 +60,8 @@ let player = validatePlayer(player2); // an Error is thrown
 
 A real-world example, and from which `ikat` was sprung. Instead of letting Mongo attempt to select the correct query, we can dictate which index we want based on the keys included in the query object to make sure our query uses the most efficient index. We'll use an example of `User` that has indexed keys of `email`, and `company`, with a compound index on `firstName` and `lastName`.
 
+npm package for this use case: [mongoose-hint](https://github.com/krmannix/mongoose-hint)
+
 ```javascript
 const ikat = require('ikat');
 
